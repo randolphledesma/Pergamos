@@ -1,6 +1,6 @@
 version: 2
   jobs:
-    linux:
+    swiftlinux:
       docker:
         - image: swift:4.1
       steps:
@@ -12,8 +12,8 @@ version: 2
 workflows:
   version: 2
   tests:
-    jobs:
-      - linux
+    jobs: &workflow_jobs
+      - swiftlinux
 
   nightly:
     triggers:
@@ -24,5 +24,4 @@ workflows:
               only:
                 - master
 
-    jobs:
-      - linux
+    jobs: *workflow_jobs
