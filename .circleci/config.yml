@@ -11,8 +11,8 @@ version: 2
 
 workflows:
   version: 2
-  tests:
-    jobs: &workflow_jobs
+  build-swift:
+    jobs:
       - swiftlinux
 
   nightly:
@@ -24,4 +24,5 @@ workflows:
               only:
                 - master
 
-    jobs: *workflow_jobs
+    jobs:
+      - swiftlinux
