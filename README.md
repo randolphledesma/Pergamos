@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/randolphledesma/Pergamos.svg?style=svg)](https://circleci.com/gh/randolphledesma/Pergamos)
+
 ## Developing project on Docker
 
 ```
