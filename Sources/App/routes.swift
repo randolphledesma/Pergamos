@@ -13,10 +13,9 @@ public func routes(_ router: Router) throws {
 
     // Example of creating a Service and using it.
     router.get("hash", String.parameter) { req -> String in
-        let string = try req.parameter(String.self)
+        let string = try req.parameters.next(String.self)
         let digest = try BCrypt.hash(string, cost: 6)
 
-        // Return the hashed string!
-        return String(bytes: digest, encoding: .utf8)!
+        return digest
     }
 }
