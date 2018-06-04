@@ -1,6 +1,7 @@
 import Routing
 import Vapor
 import Crypto
+import Leaf
 
 /// Register your application's routes here.
 ///
@@ -38,4 +39,24 @@ public func routes(_ router: Router) throws {
 
         return digest
     }
+
+    router.get("welcome") { req -> Future<View> in
+        return try req.view().render("welcome")
+    }
+
+    router.get("person") { req -> Future<View> in
+        let developer = Person(name: "Randolph", greeting: "Nice to meet you.")
+        return try req.view().render("person", developer)
+    }
+
+    router.get("team") { req -> Future<View> in
+        let leaf = try req.make(LeafRenderer.self)
+        let context = ["team": ["James", "Peter", "John"]]
+        return leaf.render("team", context)
+    }
+}
+
+struct Person: Content {
+  var name: String
+  var greeting: String
 }

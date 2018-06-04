@@ -1,4 +1,5 @@
 import Vapor
+import Leaf
 
 /// Called before your application initializes.
 ///
@@ -22,4 +23,8 @@ public func configure(
 
     middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
     services.register(middlewares)
+
+    let leafProvider = LeafProvider()
+    try services.register(leafProvider)
+    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
 }

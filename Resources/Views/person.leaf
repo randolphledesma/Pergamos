@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>App</title>
+  </head>
+  <body>
+    <h1> Hi! This is #(name)! #(greeting)</h1>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>#(PageTitle)</title>
+    </head>
+    <body>#get(PageBody)</body>
+</html>

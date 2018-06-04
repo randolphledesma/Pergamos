@@ -1,0 +1,7 @@
+#set("PageBody") {
+    #for(name in team) {
+        <p>#(name) is in the team.</p>
+    }
+}
+
+#embed("master")
