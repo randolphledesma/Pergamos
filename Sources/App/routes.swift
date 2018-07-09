@@ -55,8 +55,3 @@ public func routes(_ router: Router) throws {
         return leaf.render("team", context)
     }
 }
-
-struct Person: Content {
-  var name: String
-  var greeting: String
-}
