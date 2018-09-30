@@ -5,8 +5,8 @@ let package = Package(
     name: "pergamos",
     dependencies: [
         // 💧 A server-side Swift web framework.
-        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.6"),
-        .package(url: "https://github.com/vapor/leaf.git", from: "3.0.0-rc")
+        .package(url: "https://github.com/vapor/vapor.git", from: "3.1.0"),
+        .package(url: "https://github.com/vapor/leaf.git", from: "3.0.1")
     ],
     targets: [
         .target(name: "App", dependencies: ["Vapor", "Leaf"]),

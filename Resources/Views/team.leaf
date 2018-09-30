@@ -4,4 +4,6 @@
     }
 }
 
+#set("PageTitle") { Title: One Two }
+
 #embed("master")
