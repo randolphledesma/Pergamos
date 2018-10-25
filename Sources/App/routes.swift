@@ -2,6 +2,7 @@ import Routing
 import Vapor
 import Crypto
 import Leaf
+import Jobs
 
 /// Register your application's routes here.
 ///
@@ -30,6 +31,15 @@ public func routes(_ router: Router) throws {
 
         /// Wait for the future to be completed,
         return promise.futureResult
+    }
+
+    // Example of creating a Service and using it.
+    router.get("run") { req -> String in
+        Jobs.oneoff(delay: 10.seconds) {
+            print("I was delayed by 10 seconds.")
+        }
+        let uuid = UUID().uuidString
+        return uuid
     }
 
     // Example of creating a Service and using it.
