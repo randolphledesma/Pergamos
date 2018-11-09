@@ -8,7 +8,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/vapor.git", from: "3.1.0"),
         .package(url: "https://github.com/vapor/leaf.git", from: "3.0.1"),
         .package(url: "https://github.com/BrettRToomey/Jobs.git", from: "1.1.1"),
-        .package(url: "https://github.com/thellimist/SwiftRandom.git", from: "1.0.0")
+        .package(url: "https://github.com/iamjono/SwiftRandom.git", from: "1.0.0")
     ],
     targets: [
         .target(name: "App", dependencies: ["Vapor", "Leaf", "Jobs", "SwiftRandom"]),
