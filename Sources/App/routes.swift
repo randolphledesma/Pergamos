@@ -53,10 +53,31 @@ public func routes(_ router: Router) throws {
             print("always")
         }
         DispatchQueue.global(qos: .utility).async {
-            sleep(5)
-            promise.succeed()
+            let sessionConfig = URLSessionConfiguration.default
+            sessionConfig.timeoutIntervalForRequest = TimeInterval(10)
+            //sessionConfig.timeoutIntervalForResource = 5.0
+            sessionConfig.httpAdditionalHeaders = ["User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3"]
+            let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+            let urlComponents = NSURLComponents(string: "https://httpbins.org/anything")!
+            urlComponents.queryItems = [
+                URLQueryItem(name: "param", value: "param"),
+                URLQueryItem(name: "args", value: "args")
+            ]
+            var request = URLRequest(url: urlComponents.url!)
+            request.httpMethod = "GET"
+            let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+                if (error == nil) {
+                    if let newdata = data, let str = String(data: newdata, encoding: .utf8) {
+                        print(str)
+                    }
+                    promise.succeed()
+                } else {
+                    promise.fail(error: error!)
+                }
+            })
+            task.resume()
         }
-        return uuid
+        return uuid.lowercased()
     }
 
     // Example of creating a Service and using it.
