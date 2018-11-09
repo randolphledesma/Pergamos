@@ -3,6 +3,7 @@ import Vapor
 import Crypto
 import Leaf
 import Jobs
+import SwiftRandom
 
 /// Register your application's routes here.
 ///
@@ -48,7 +49,7 @@ public func routes(_ router: Router) throws {
         promise.futureResult.do {
             print("done")
         }.catch { error in
-            print("error")
+            print(error)
         }.always {
             print("always")
         }
@@ -67,13 +68,23 @@ public func routes(_ router: Router) throws {
             var request = URLRequest(url: urlComponents.url!)
             request.httpMethod = "GET"
             let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
-                if (error == nil) {
+                if let error = error {
+                    promise.fail(error: error)
+                } else {
+
+                    let tmp = NSTemporaryDirectory() as String
+                    let filename = UUID().uuidString + ".json"
+
+                    let saveURL = URL(fileURLWithPath: tmp).appendingPathComponent("test", isDirectory: true).appendingPathComponent(filename, isDirectory: false)
                     if let newdata = data, let str = String(data: newdata, encoding: .utf8) {
+                        do {
+                            try newdata.write(to: saveURL)
+                        } catch {
+                            //void
+                        }
                         print(str)
                     }
                     promise.succeed()
-                } else {
-                    promise.fail(error: error!)
                 }
             })
             task.resume()
@@ -85,7 +96,6 @@ public func routes(_ router: Router) throws {
     router.get("hash", String.parameter) { req -> String in
         let string = try req.parameters.next(String.self)
         let digest = try BCrypt.hash(string, cost: 6)
-
         return digest
     }
 
@@ -94,8 +104,9 @@ public func routes(_ router: Router) throws {
     }
 
     router.get("person") { req -> Future<View> in
-        let developer = Person(name: "Randolph", greeting: "Nice to meet you.")
-        return try req.view().render("person", developer)
+        let name = Randoms.randomFakeName()
+        let person = Person(name: name, greeting: "Nice to meet you.")
+        return try req.view().render("person", person)
     }
 
     router.get("team") { req -> Future<View> in
