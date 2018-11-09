@@ -19,7 +19,7 @@ public func routes(_ router: Router) throws {
         let promise = req.eventLoop.newPromise(String.self)
 
         /// Dispatch some work to happen on a background thread
-        DispatchQueue.global(qos: .background).async(execute: {
+        DispatchQueue.global(qos: .background).async {
             /// Puts the background thread to sleep
             /// This will not affect any of the event loops
             sleep(5)
@@ -27,7 +27,7 @@ public func routes(_ router: Router) throws {
             /// When the "blocking work" has completed,
             /// complete the promise and its associated future.
             promise.succeed(result: "Hello, world!")
-        })
+        }
 
         /// Wait for the future to be completed,
         return promise.futureResult
@@ -35,10 +35,27 @@ public func routes(_ router: Router) throws {
 
     // Example of creating a Service and using it.
     router.get("run") { req -> String in
-        Jobs.oneoff(delay: 10.seconds) {
-            print("I was delayed by 10 seconds.")
-        }
         let uuid = UUID().uuidString
+        Jobs.oneoff(delay: 10.seconds) {
+            print("I was delayed by 10 seconds. \(uuid)")
+        }
+        return uuid
+    }
+
+    router.get("run2") { req -> String in
+        let uuid = UUID().uuidString
+        let promise = req.eventLoop.newPromise(Void.self)
+        promise.futureResult.do {
+            print("done")
+        }.catch { error in
+            print("error")
+        }.always {
+            print("always")
+        }
+        DispatchQueue.global(qos: .utility).async {
+            sleep(5)
+            promise.succeed()
+        }
         return uuid
     }
 
