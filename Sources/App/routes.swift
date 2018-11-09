@@ -58,7 +58,7 @@ public func routes(_ router: Router) throws {
             //sessionConfig.timeoutIntervalForResource = 5.0
             sessionConfig.httpAdditionalHeaders = ["User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3"]
             let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-            let urlComponents = NSURLComponents(string: "https://httpbins.org/anything")!
+            let urlComponents = NSURLComponents(string: "https://httpbin.org/anything")!
             urlComponents.queryItems = [
                 URLQueryItem(name: "param", value: "param"),
                 URLQueryItem(name: "args", value: "args")
