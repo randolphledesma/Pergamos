@@ -43,7 +43,7 @@ public func routes(_ router: Router) throws {
     }
 
     router.get("run2") { req -> String in
-        let uuid = UUID().uuidString
+        let uuid = UUID().uuidString.lowercased()
         let promise = req.eventLoop.newPromise(Void.self)
         promise.futureResult.do {
             print("done")
@@ -60,8 +60,9 @@ public func routes(_ router: Router) throws {
             let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
             let urlComponents = NSURLComponents(string: "https://httpbin.org/anything")!
             urlComponents.queryItems = [
-                URLQueryItem(name: "param", value: "param"),
-                URLQueryItem(name: "args", value: "args")
+                URLQueryItem(name: "param", value: "this is a parameter"),
+                URLQueryItem(name: "args", value: "with special %&?/~!@#$%^&*()"),
+                URLQueryItem(name: "uuid", value: uuid)
             ]
             var request = URLRequest(url: urlComponents.url!)
             request.httpMethod = "GET"
@@ -77,7 +78,7 @@ public func routes(_ router: Router) throws {
             })
             task.resume()
         }
-        return uuid.lowercased()
+        return uuid
     }
 
     // Example of creating a Service and using it.
